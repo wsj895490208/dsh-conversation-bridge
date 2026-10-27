@@ -1,0 +1,17 @@
+{
+  "version": "0.1.0",
+  "nativeSystemPrompt": true,
+  "nativeSession": true,
+  "nativeDeepSeekSerializer": true,
+  "realModelCalls": 0,
+  "requests": 4,
+  "engineeringToChat": true,
+  "chatOnlyMemorySearch": true,
+  "engineeringToolsAbsentFromChatWire": true,
+  "ragCallable": true,
+  "secondChatNoRepeatedReset": true,
+  "restoreThenEngineering": true,
+  "nativeApprovalPreserved": true,
+  "originalEventsPreserved": true,
+  "pastToolResultsPreserved": true
+}

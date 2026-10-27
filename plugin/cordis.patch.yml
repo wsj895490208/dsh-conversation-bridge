@@ -1,0 +1,34 @@
+- insert:
+    - id: dsh-conversation-bridge
+      name: dsh-conversation-bridge
+      config:
+        dataDir: ''
+        modelCache: ''
+- insert:
+    - id: preset-conversation-bridge
+      name: '@deepseek-ai/dsh-agent-preset'
+      config:
+        id: conversation-bridge
+        name: 网页接续
+        description: 导入原文重建上下文，历史检索按需使用。
+        plugins:
+          - name: '@deepseek-ai/dsh-persona'
+            config:
+              prefix: ''
+              complete: true
+              includeRuntimeContext: true
+          - name: '@deepseek-ai/dsh-time-context'
+          - name: '@deepseek-ai/dsh-tool-pwsh'
+          - name: '@deepseek-ai/dsh-tool-fs'
+          - name: '@deepseek-ai/dsh-tool-ask-user'
+          - name: '@deepseek-ai/dsh-tool-web'
+          - name: 'dsh-conversation-bridge/memory-tool'
+          - name: cordis:group
+            group: true
+            isolate:
+              compaction: true
+              toolResultPruner: true
+            config:
+              - name: 'dsh-conversation-bridge/compaction'
+              - name: '@deepseek-ai/dsh-command-compact'
+              - name: '@deepseek-ai/dsh-compaction-tool-result-pruner'

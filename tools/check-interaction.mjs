@@ -1,0 +1,42 @@
+// Installed SystemPrompt, Session, LlmRuntime and DeepSeek Messages serializer.
+// Only synthetic messages and a locally intercepted .invalid transport are used.
+import assert from 'node:assert/strict';
+import {resolve,join} from 'node:path';
+import {packageLoader} from '../plugin/src/sdk.mjs';
+import {nativeSession} from '../plugin/src/native.mjs';
+import {installInteraction} from '../plugin/src/interaction.mjs';
+import {writeJson} from '../plugin/src/util.mjs';
+const root=resolve(import.meta.dirname,'..'),load=packageLoader(join(process.argv[2],'resources/app.asar/dsh/node_modules/@deepseek-ai'));
+const [{Context},{SystemPrompt},{sessionFormatCatalog:catalog},{Session,SessionId,SessionLogOffset},{currentSessionMessageProjections},llm,{DeepSeekAdapter,resolveAdapterOptions},{apply:memoryPlugin}]=await Promise.all([load('cordis'),load('dsh-system-prompt'),load('dsh-session-format-catalog'),load('dsh-session'),load('dsh-session-format-catalog','message-projections'),load('dsh-llm'),load('dsh-llm-deepseek'),import('../plugin/src/memory-tool.mjs')]);
+const candidate=nativeSession([{nodeId:'1',role:'user',visible:[{type:'REQUEST',content:'合成原文'}],time:'2020-01-01'},{nodeId:'2',role:'assistant',visible:[{type:'RESPONSE',content:'合成历史'}],time:'2020-01-01'}],join(root,'tests/.tmp/interaction-native'));
+function restore(events){const decoder=catalog.createRestore(catalog.encodeCurrentHeader(candidate.header,SessionLogOffset(0)),{recovery:'strict',validation:'current'});for(const e of events)decoder.decodeRow(catalog.encodeCurrentEvent(e));const r=decoder.finish();return Session.fromRestore(SessionId(candidate.header.id),r.events,r.header,SessionLogOffset(r.inheritedEventCount),'detached',currentSessionMessageProjections);}
+let session=restore(candidate.events),mode='engineering',memoryCalls=0,memoryTool;
+const agent={id:session.id,session},ctx=new Context(),scopes=[ctx.plugin(llm.LlmRuntime),ctx.plugin(SystemPrompt,{includeHarnessIdentity:false,includeRuntimeContext:false,personaPrefix:'合成用户提示词'})];for(const s of scopes)await s.await();
+const schemas=['memory_search','pwsh','read'].map(name=>({name,description:'synthetic',parameters:{type:'object',properties:{},additionalProperties:false}}));
+ctx.systemPrompt.tools(()=>({schemas}));
+const service={bound:id=>id===agent.id?{id:'r',status:'ready',mode}:null,recallCache:new Map(),store:{audit(){}},host:{load},async memorySearch(id,cwd,q){assert.equal(id,agent.id);memoryCalls++;return {kind:'historical-quotes',query:q,hits:[],mode:'synthetic',degraded:''};}};
+installInteraction(ctx,service);
+await memoryPlugin({tools:{register(t){memoryTool=t;}},conversationBridge:{service}});
+const route={provider:'synthetic',model:'deepseek-flash',maxTokens:1024,reasoningEffort:'low'};
+let turn=1;
+async function admit(nextMode){mode=nextMode;const assembly=await ctx.systemPrompt.assemble({agent});const user=llm.createUserMessage({source:{kind:'user'},content:[{type:'text',text:'继续合成对话'}]});const decision=await ctx.waterfall('agent/pre-step',{agent,messages:[user],signal:new AbortController().signal},()=>Promise.resolve({kind:'enter',messages:[user]}));assert.equal(decision.kind,'enter');
+ const previous=session.requestHeader()?.tools||[];turn++;session.append('turn/start',{turn});session.append('step/start',{turn,step:1});const header=session.append('request/header',{reason:'change',...(decision.startsRequestSeries?{startsSeries:true}:{}),header:{config:route,tools:assembly.tools}});
+ const additions=assembly.tools.filter(t=>!previous.some(x=>x.name===t.name)).map(t=>({type:'tool-addition',toolName:t.name})),removals=previous.filter(t=>!assembly.tools.some(x=>x.name===t.name)).map(t=>({type:'tool-removal',toolName:t.name}));
+ if(additions.length||removals.length)session.append('developer/message',{turn,step:1,...(additions.length?{headerSeq:header.seq}:{}),message:llm.createDeveloperMessage({source:{kind:'tool-registry'},content:[...additions,...removals]})},{surfaceOp:'append'});
+ session.append('user/message',user,{surfaceOp:'append'});return {assembly,decision};
+}
+function settle(withTool=false){let step=1;if(withTool){const block={type:'tool-call',id:'past-pwsh',name:'pwsh',arguments:'{}'};session.append('assistant/message',{turn,step,stream:[],message:llm.createAssistantMessage({source:{provider:route.provider,model:route.model},content:[block]})},{surfaceOp:'append'});const callSeq=session.append('tool/call',{turn,step,callId:block.id,name:block.name,arguments:block.arguments}).seq;session.append('tool/result',{turn,step,message:llm.createToolResultMessage({callId:block.id,content:[{type:'text',text:'合成工程结果'}],isError:false})},{surfaceOp:'append',sourceEventSeqs:[callSeq]});session.append('step/end',{turn,step});step=2;session.append('step/start',{turn,step});}session.append('assistant/message',{turn,step,stream:[],message:llm.createAssistantMessage({source:{provider:route.provider,model:route.model},content:[{type:'reasoning',text:'synthetic reasoning'},{type:'text',text:'合成回复'}]})},{surfaceOp:'append'});session.append('step/end',{turn,step});session.append('turn/end',{turn,reason:{kind:'completed'}});}
+const adapter=new DeepSeekAdapter({options:()=>resolveAdapterOptions({baseURL:'https://bridge-test.invalid/anthropic'}),resolveAuth:async()=>({headers:{}}),resolveUserId:()=> 'synthetic',prepareExtensions:async()=>({fields:{},accept:async()=>{}})}),dispose=ctx.llm.registerAdapter(['synthetic'],adapter),requests=[],fetchOriginal=globalThis.fetch;
+globalThis.fetch=async(url,init)=>{assert.equal(String(url),'https://bridge-test.invalid/anthropic/v1/messages');requests.push(JSON.parse(init.body));const events=[{type:'message_start',message:{usage:{input_tokens:1}}},{type:'content_block_start',index:0,content_block:{type:'text',text:'合成成功'}},{type:'content_block_stop',index:0},{type:'message_delta',delta:{stop_reason:'end_turn'},usage:{output_tokens:1}},{type:'message_stop'}];return new Response(events.map(e=>`event: ${e.type}\ndata: ${JSON.stringify(e)}\n\n`).join(''),{headers:{'content-type':'text/event-stream'}});};
+async function send(){const call=await ctx.llm.prepareCall(route),chunks=[];for await(const c of call.stream({...call.config,messages:session.deriveMessages(),tools:session.requestHeader().tools,toolHistory:session.toolHistory()}))chunks.push(c);assert.equal(chunks.at(-1).reason.kind,'stop',JSON.stringify(chunks));}
+try{
+ await admit('engineering');await send();settle(true);const original=structuredClone(session.snapshotEvents());
+ const chat=await admit('chat');assert.equal(chat.decision.startsRequestSeries,true);assert.deepEqual(chat.assembly.tools.map(t=>t.name),['memory_search']);await send();settle();assert.deepEqual(requests[1].tools.map(t=>t.name),['memory_search']);assert(!JSON.stringify(requests[1].messages).includes('tool_addition'));assert(requests[1].messages.some(m=>m.content?.some(b=>b.type==='tool_use'&&b.name==='pwsh')));
+ const denied=await ctx.waterfall('tools/pre-execute',{agent,name:'pwsh'},()=>{throw Error('工程工具不应执行');});assert.equal(denied.kind,'deny');
+ await memoryTool.execute({query:'合成往事'},{agent});assert.equal(memoryCalls,1);
+ const again=await admit('chat');assert.notEqual(again.decision.startsRequestSeries,true);await send();settle();assert.deepEqual(requests[2].tools.map(t=>t.name),['memory_search']);
+ session=restore(session.snapshotEvents());agent.session=session;const work=await admit('engineering');assert.equal(work.decision.startsRequestSeries,true);await send();settle();assert.deepEqual(requests[3].tools.map(t=>t.name).sort(),['memory_search','pwsh','read']);
+ const approval={kind:'ask',reason:'原生审批'};assert.equal(await ctx.waterfall('tools/pre-execute',{agent,name:'pwsh'},()=>Promise.resolve(approval)),approval);
+ assert.deepEqual(session.snapshotEvents().slice(0,original.length),original);
+ const report={version:'0.1.0',nativeSystemPrompt:true,nativeSession:true,nativeDeepSeekSerializer:true,realModelCalls:0,requests:requests.length,engineeringToChat:true,chatOnlyMemorySearch:true,engineeringToolsAbsentFromChatWire:true,ragCallable:true,secondChatNoRepeatedReset:true,restoreThenEngineering:true,nativeApprovalPreserved:true,originalEventsPreserved:true,pastToolResultsPreserved:true};writeJson(join(root,'docs/interaction-validation.json'),report);console.log(JSON.stringify(report));
+}finally{globalThis.fetch=fetchOriginal;dispose();for(const s of scopes.reverse())await s.dispose();}

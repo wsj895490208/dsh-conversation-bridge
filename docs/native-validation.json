@@ -1,0 +1,55 @@
+{
+  "version": "0.1.0",
+  "realModelCalls": 0,
+  "scenarios": [
+    {
+      "name": "under-threshold",
+      "summaryCalls": 0,
+      "allSourceMessages": 6
+    },
+    {
+      "name": "idempotency-and-independent-reimport",
+      "isolatedMemory": true
+    },
+    {
+      "name": "multiple-native-compactions",
+      "compactions": 10,
+      "originalRepliesPreserved": true,
+      "noFutureLeak": true,
+      "defaultTemplate": true,
+      "defaultRetention": true
+    },
+    {
+      "name": "factory-parity",
+      "sameRequests": true,
+      "sameTriggerCount": true
+    },
+    {
+      "name": "checkpoint-restart",
+      "noRepeatedSuccessfulCalls": true
+    },
+    {
+      "name": "truncated-summary",
+      "explicitRetry": true,
+      "failedUsageRecorded": true
+    },
+    {
+      "name": "success-cache-before-commit-crash",
+      "noRepeatPayment": true
+    },
+    {
+      "name": "quota",
+      "noCallWhenInsufficient": true
+    },
+    {
+      "name": "native-disk-readback",
+      "exactEvents": true
+    },
+    {
+      "name": "incremental-capture",
+      "deduplicated": true,
+      "isolated": true
+    }
+  ],
+  "syntheticSummaryCalls": 36
+}

@@ -1,0 +1,17 @@
+{
+  "name": "dsh-conversation-bridge",
+  "version": "0.1.0",
+  "description": "Import DeepSeek web history, rebuild native context, and continue with isolated local memory",
+  "type": "module",
+  "main": "src/host.mjs",
+  "exports": {".": "./src/host.mjs", "./client": "./client/index.js", "./memory-tool": "./src/memory-tool.mjs", "./compaction": "./src/compaction.mjs"},
+  "files": ["src", "client", "locks", "notices", "cordis.patch.yml", "README.md", "LICENSE", "NOTICE", "THIRD_PARTY.md"],
+  "repository": {"type": "git", "url": "https://github.com/wsj895490208/dsh-conversation-bridge.git", "directory": "plugin"},
+  "homepage": "https://github.com/wsj895490208/dsh-conversation-bridge#readme",
+  "bugs": {"url": "https://github.com/wsj895490208/dsh-conversation-bridge/issues"},
+  "keywords": ["dsh-plugin", "deepseek-harness", "conversation", "import", "compaction", "rag", "local-first"],
+  "engines": {"node": ">=24", "dsh": "0.2.1-rc.3"},
+  "dsh": {"bundle": {"patch": "./cordis.patch.yml"}, "client": {"platform": "web", "inject": ["@deepseek-ai/dsh-client-ui-settings", "@deepseek-ai/dsh-client-ui-renderer", "@deepseek-ai/dsh-client-ui-workspace"]}},
+  "dependencies": {"@huggingface/transformers": "4.2.0"},
+  "license": "MIT"
+}

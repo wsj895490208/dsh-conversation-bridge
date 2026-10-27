@@ -1,0 +1,9 @@
+data/
+dist/
+backups/
+node_modules/
+**/node_modules/
+tests/.tmp/
+*.log
+.env*
+__pycache__/

@@ -1,0 +1,790 @@
+{
+  "scope": "Package-declared metadata and available installed notices; no binaries or model files included.",
+  "absentTextMeaning": "An empty licenseFiles list is not permission to omit upstream terms. Dependencies are installed separately; retain their notices when redistributing.",
+  "dependencies": [
+    {
+      "name": "@emnapi/runtime",
+      "version": "1.11.3",
+      "license": "MIT",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@huggingface/jinja",
+      "version": "0.5.10",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_huggingface_jinja__LICENSE"
+      ],
+      "repository": "https://github.com/huggingface/huggingface.js.git"
+    },
+    {
+      "name": "@huggingface/tokenizers",
+      "version": "0.1.3",
+      "license": "Apache-2.0",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_huggingface_tokenizers__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/huggingface/tokenizers.js.git"
+      }
+    },
+    {
+      "name": "@huggingface/transformers",
+      "version": "4.2.0",
+      "license": "Apache-2.0",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_huggingface_transformers__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/huggingface/transformers.js.git"
+      }
+    },
+    {
+      "name": "@img/colour",
+      "version": "1.1.0",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_img_colour__LICENSE.md"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lovell/colour.git"
+      }
+    },
+    {
+      "name": "@img/sharp-darwin-arm64",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-darwin-x64",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-darwin-arm64",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-darwin-x64",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-linux-arm",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-linux-arm64",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-linux-ppc64",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-linux-riscv64",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-linux-s390x",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-linux-x64",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-linuxmusl-arm64",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-libvips-linuxmusl-x64",
+      "version": "1.2.4",
+      "license": "LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-linux-arm",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-linux-arm64",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-linux-ppc64",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-linux-riscv64",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-linux-s390x",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-linux-x64",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-linuxmusl-arm64",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-linuxmusl-x64",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-wasm32",
+      "version": "0.34.5",
+      "license": "Apache-2.0 AND LGPL-3.0-or-later AND MIT",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-win32-arm64",
+      "version": "0.34.5",
+      "license": "Apache-2.0 AND LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-win32-ia32",
+      "version": "0.34.5",
+      "license": "Apache-2.0 AND LGPL-3.0-or-later",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "@img/sharp-win32-x64",
+      "version": "0.34.5",
+      "license": "Apache-2.0 AND LGPL-3.0-or-later",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_img_sharp-win32-x64__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lovell/sharp.git",
+        "directory": "npm/win32-x64"
+      }
+    },
+    {
+      "name": "@protobufjs/aspromise",
+      "version": "1.1.2",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_protobufjs_aspromise__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/protobuf.js.git"
+      }
+    },
+    {
+      "name": "@protobufjs/base64",
+      "version": "1.1.2",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_protobufjs_base64__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/protobuf.js.git"
+      }
+    },
+    {
+      "name": "@protobufjs/codegen",
+      "version": "2.0.5",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_protobufjs_codegen__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/protobuf.js.git"
+      }
+    },
+    {
+      "name": "@protobufjs/eventemitter",
+      "version": "1.1.1",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_protobufjs_eventemitter__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/protobuf.js.git"
+      }
+    },
+    {
+      "name": "@protobufjs/fetch",
+      "version": "1.1.1",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_protobufjs_fetch__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/protobuf.js.git"
+      }
+    },
+    {
+      "name": "@protobufjs/float",
+      "version": "1.0.2",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_protobufjs_float__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/protobuf.js.git"
+      }
+    },
+    {
+      "name": "@protobufjs/path",
+      "version": "1.1.2",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_protobufjs_path__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/protobuf.js.git"
+      }
+    },
+    {
+      "name": "@protobufjs/pool",
+      "version": "1.1.0",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_protobufjs_pool__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/protobuf.js.git"
+      }
+    },
+    {
+      "name": "@protobufjs/utf8",
+      "version": "1.1.2",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_protobufjs_utf8__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/protobufjs/protobuf.js.git"
+      }
+    },
+    {
+      "name": "@types/node",
+      "version": "26.6.5",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "_types_node__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/node"
+      }
+    },
+    {
+      "name": "adm-zip",
+      "version": "0.5.18",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "adm-zip__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/cthackers/adm-zip.git"
+      }
+    },
+    {
+      "name": "boolean",
+      "version": "3.2.0",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "boolean__LICENSE.txt"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/thenativeweb/boolean.git"
+      }
+    },
+    {
+      "name": "define-data-property",
+      "version": "1.1.4",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "define-data-property__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/define-data-property.git"
+      }
+    },
+    {
+      "name": "define-properties",
+      "version": "1.2.1",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "define-properties__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/ljharb/define-properties.git"
+      }
+    },
+    {
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "license": "Apache-2.0",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "detect-libc__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/lovell/detect-libc.git"
+      }
+    },
+    {
+      "name": "detect-node",
+      "version": "2.1.0",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "detect-node__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/iliakan/detect-node"
+      }
+    },
+    {
+      "name": "es-define-property",
+      "version": "1.0.1",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "es-define-property__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/es-define-property.git"
+      }
+    },
+    {
+      "name": "es-errors",
+      "version": "1.3.0",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "es-errors__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/es-errors.git"
+      }
+    },
+    {
+      "name": "es6-error",
+      "version": "4.1.1",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "es6-error__LICENSE.md"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/bjyoungblood/es6-error.git"
+      }
+    },
+    {
+      "name": "escape-string-regexp",
+      "version": "4.0.0",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "escape-string-regexp__license"
+      ],
+      "repository": "sindresorhus/escape-string-regexp"
+    },
+    {
+      "name": "flatbuffers",
+      "version": "25.9.23",
+      "license": "Apache-2.0",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "flatbuffers__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/google/flatbuffers.git"
+      }
+    },
+    {
+      "name": "global-agent",
+      "version": "3.0.0",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "global-agent__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/gajus/global-agent"
+      }
+    },
+    {
+      "name": "globalthis",
+      "version": "1.0.4",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "globalthis__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/ljharb/System.global.git"
+      }
+    },
+    {
+      "name": "gopd",
+      "version": "1.2.0",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "gopd__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ljharb/gopd.git"
+      }
+    },
+    {
+      "name": "guid-typescript",
+      "version": "1.0.9",
+      "license": "ISC",
+      "installedForBuild": true,
+      "licenseFiles": [],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/NicolasDeveloper/guid-typescript"
+      }
+    },
+    {
+      "name": "has-property-descriptors",
+      "version": "1.0.2",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "has-property-descriptors__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/inspect-js/has-property-descriptors.git"
+      }
+    },
+    {
+      "name": "json-stringify-safe",
+      "version": "5.0.1",
+      "license": "ISC",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "json-stringify-safe__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/isaacs/json-stringify-safe"
+      }
+    },
+    {
+      "name": "long",
+      "version": "5.3.2",
+      "license": "Apache-2.0",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "long__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/dcodeIO/long.js.git"
+      }
+    },
+    {
+      "name": "matcher",
+      "version": "3.0.0",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "matcher__license"
+      ],
+      "repository": "sindresorhus/matcher"
+    },
+    {
+      "name": "object-keys",
+      "version": "1.1.1",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "object-keys__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/ljharb/object-keys.git"
+      }
+    },
+    {
+      "name": "onnxruntime-common",
+      "version": "1.24.3",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [],
+      "repository": {
+        "url": "https://github.com/Microsoft/onnxruntime.git",
+        "type": "git"
+      }
+    },
+    {
+      "name": "onnxruntime-node",
+      "version": "1.24.3",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [],
+      "repository": {
+        "url": "https://github.com/Microsoft/onnxruntime.git",
+        "type": "git"
+      }
+    },
+    {
+      "name": "onnxruntime-web",
+      "version": "1.26.0-dev.20260416-b7804b056c",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [],
+      "repository": {
+        "url": "https://github.com/Microsoft/onnxruntime.git",
+        "type": "git"
+      }
+    },
+    {
+      "name": "onnxruntime-web/node_modules/onnxruntime-common",
+      "version": "1.24.0-dev.20251116-b39e144322",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [],
+      "repository": {
+        "url": "https://github.com/Microsoft/onnxruntime.git",
+        "type": "git"
+      }
+    },
+    {
+      "name": "platform",
+      "version": "1.3.6",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "platform__LICENSE"
+      ],
+      "repository": "bestiejs/platform.js"
+    },
+    {
+      "name": "protobufjs",
+      "version": "7.6.6",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "protobufjs__google_LICENSE",
+        "protobufjs__LICENSE"
+      ],
+      "repository": "protobufjs/protobuf.js"
+    },
+    {
+      "name": "roarr",
+      "version": "2.15.4",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "roarr__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git@github.com:gajus/roarr.git"
+      }
+    },
+    {
+      "name": "semver",
+      "version": "7.8.5",
+      "license": "ISC",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "semver__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm/node-semver.git"
+      }
+    },
+    {
+      "name": "semver-compare",
+      "version": "1.0.0",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "semver-compare__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/substack/semver-compare.git"
+      }
+    },
+    {
+      "name": "serialize-error",
+      "version": "7.0.1",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "serialize-error__license"
+      ],
+      "repository": "sindresorhus/serialize-error"
+    },
+    {
+      "name": "sharp",
+      "version": "0.34.5",
+      "license": "Apache-2.0",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "sharp__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/lovell/sharp.git"
+      }
+    },
+    {
+      "name": "sprintf-js",
+      "version": "1.1.3",
+      "license": "BSD-3-Clause",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "sprintf-js__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/alexei/sprintf.js.git"
+      }
+    },
+    {
+      "name": "tslib",
+      "version": "2.8.1",
+      "license": "0BSD",
+      "installedForBuild": false,
+      "licenseFiles": []
+    },
+    {
+      "name": "type-fest",
+      "version": "0.13.1",
+      "license": "(MIT OR CC0-1.0)",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "type-fest__license"
+      ],
+      "repository": "sindresorhus/type-fest"
+    },
+    {
+      "name": "undici-types",
+      "version": "8.9.0",
+      "license": "MIT",
+      "installedForBuild": true,
+      "licenseFiles": [
+        "undici-types__LICENSE"
+      ],
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nodejs/undici.git"
+      }
+    }
+  ]
+}

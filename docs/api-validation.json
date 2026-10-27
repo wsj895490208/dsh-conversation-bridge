@@ -1,0 +1,17 @@
+{
+  "version": "0.1.0",
+  "realModelCalls": 0,
+  "actualNativeLoader": true,
+  "actualNativePresetRegistry": true,
+  "actualScopedSystemPrompt": true,
+  "actualNativeToolRegistry": true,
+  "officialRoutes": true,
+  "previewOnlyMemorySearch": true,
+  "configuredBlankSessionSource": true,
+  "sourceMessages": 4,
+  "vectorIndexVerified": true,
+  "nativeReadback": true,
+  "ready": true,
+  "modeSwitch": true,
+  "ragCallable": true
+}

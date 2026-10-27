@@ -1,0 +1,23 @@
+{
+  "version": "0.1.0",
+  "localAdmission": true,
+  "readback": true,
+  "embeddingFirst": true,
+  "separateProcess": true,
+  "hostPid": 36344,
+  "semanticPid": 36448,
+  "dimensions": 384,
+  "vectorIndexVerified": true,
+  "vectorSearchVerified": true,
+  "hostLoadedPluginSharp": false,
+  "hostNativeImages": [
+    "sharp-win32-x64-0.35.5.node",
+    "libvips-cpp-8.18.7.dll",
+    "libvips-42.dll"
+  ],
+  "syntheticBytes": 99,
+  "width": 32,
+  "height": 32,
+  "realModelCalls": 0,
+  "remoteUploads": 0
+}

@@ -1,0 +1,19 @@
+DSH Conversation Bridge
+Copyright (c) 2026 DSH Conversation Bridge contributors
+
+Project code: MIT. Third-party components retain their own licenses.
+See plugin/THIRD_PARTY.md and plugin/notices/ for attribution and license texts.
+
+This plugin uses DeepSeek Harness's native session and compaction services.
+Compaction algorithms and pretrained embedding models are credited to their
+original authors, not claimed as original work by this project.
+
+The historical prototype used wpc0323/deepseek-web-import (MIT),
+LingSuiYA/deepseek-web-import-f (MIT), and MemTensor/MemOS with the
+cnlove7777777-art/dsh-memos-compat fork (upstream Apache-2.0; fork modifications
+described as MIT). These historical vendor implementations are not shipped.
+
+Model weights are not distributed. The converted model's separate license
+metadata remains unclear; see plugin/THIRD_PARTY.md for the explicit qualification.
+
+This is an independent community project, without official endorsement.
