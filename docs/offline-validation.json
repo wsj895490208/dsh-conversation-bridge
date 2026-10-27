@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "extractedReleasePackage": true,
+  "emptyCachePreparation": true,
+  "bundledSource": true,
+  "preparationNetworkCalls": 0,
+  "cachedReuse": true,
+  "embeddingLocalOnly": true,
+  "dimensions": 384,
+  "vectorIndexVerified": true,
+  "syntheticRecallTop1": true,
+  "mismatchedVectorsRejected": true,
+  "rawTextPreserved": true,
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+  "modelFingerprint": "25336383ae665c384cce47f4d762c8b273a33470db558d20b585aa2e5ceea47a",
+  "realModelCalls": 0
+}

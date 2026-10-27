@@ -6,7 +6,7 @@
 
 **导入 JSON → 核对分支与模型 → 本地预演 → 确认准备 → 打开接续会话**
 
-> v0.1.0 · 实验版。[下载与发布说明](https://github.com/wsj895490208/dsh-conversation-bridge/releases/tag/v0.1.0)。未发布 npm 包。
+> v0.2.0 · 含模型实验版。[下载完整版](https://github.com/wsj895490208/dsh-conversation-bridge/releases/tag/v0.2.0)。未发布 npm 包。
 >
 > 当前验证范围：Windows／DSH 0.2.1-rc.3／会话格式 V4。其他宿主版本会停止导入，等待兼容性验证。
 
@@ -68,14 +68,17 @@
 
 - Windows 版 DeepSeek Harness **0.2.1-rc.3**，使用 V4 会话格式。
 - 已配置一个可用模型，并在原生页面打开对应会话作为设置来源；无需先付费发送测试消息。
-- 首次准备时可访问 Hugging Face，下载固定版本的本地多语言 MiniLM 模型并校验 SHA-256。
+
+**无需手动准备向量模型。** 完整版安装包已包含原发布方的多语言 MiniLM ONNX 模型，首次导入时自动从包内准备缓存并校验 SHA-256，不访问 Hugging Face。模型文件合计约 122 MiB（未压缩），不需要额外的 embedding API 密钥。
+
+这里的“离线”指模型准备与本地索引。首次安装时包管理器仍可能联网获取插件依赖，聊天和滚动摘要仍使用你配置的模型服务。
 
 ### 安装本地包
 
 从上方 Release 下载 `.tgz`，先正常退出 Harness。进入安装包所在目录，通过官方 CLI 安装：
 
 ```powershell
-dsh plugin --profile desktop add .\dsh-conversation-bridge-0.1.0.tgz --ignore-scripts
+dsh plugin --profile desktop add .\dsh-conversation-bridge-0.2.0.tgz --ignore-scripts
 ```
 
 如果 `dsh` 不在 PATH 中，请使用 Harness 安装目录内自带的 CLI。安装后重新打开 Harness，点击侧边栏的 **“导入网页对话”**。
@@ -91,13 +94,15 @@ dsh plugin --profile desktop add .\dsh-conversation-bridge-0.1.0.tgz --ignore-sc
 5. 确认准备。页面显示上下文重建、摘要次数、用量与索引进度；任务支持暂停、继续和失败重试。
 6. 原生写入回读、上下文重建及索引核验通过后，打开接续会话，发送你的第一条新消息。
 
+本地向量模型随安装包提供，复制、校验和缓存复用全部自动完成；不需要另下模型、填模型路径或访问 Hugging Face。文件缺失或损坏会提示重装完整版，不会静默改为在线下载。
+
 同一确认请求保持幂等；再次主动导入同一文件可以创建独立的新会话。首版不提供网页登录令牌或在线补附件功能。
 
 ## 费用与数据
 
 本地解析、预演和向量计算不调用聊天模型。超过阈值后的摘要，以及后续聊天，使用你在 DSH 中配置的模型服务，可能产生费用；相应历史内容会作为必要上下文发送给该服务。
 
-导入准备的默认每日摘要额度为 **200 万输入／20 万输出 token**，可在页面调整。它与主动聊天、会话就绪后的宿主压缩分别统计。首次模型下载和本地索引需要网络流量、磁盘及计算资源。
+导入准备的默认每日摘要额度为 **200 万输入／20 万输出 token**，可在页面调整。它与主动聊天、会话就绪后的宿主压缩分别统计。模型准备消耗本地磁盘与计算资源，不产生模型下载流量或 embedding API 费用。
 
 默认数据目录为：
 
@@ -107,13 +112,16 @@ $DSH_HOME/conversation-bridge
 
 未设置 `DSH_HOME` 时为 `~/.dsh/conversation-bridge`。可在 **任务与设置 → 存储位置** 配置数据目录与模型缓存；更改位置不会自动搬迁已有数据。宿主无法在线重载时，页面会提示正常重启后生效。
 
-数据目录包括导入原件、任务登记、独立会话记忆库、摘要检查点和本地模型。宿主凭据与原生会话继续由 Harness 管理。用户数据、模型缓存和本地备份被 Git 排除，也不进入安装包。
+数据目录包括导入原件、任务登记、独立会话记忆库、摘要检查点和本地模型缓存。宿主凭据与原生会话继续由 Harness 管理。用户数据、运行缓存和本地备份不进入 Git 或安装包。公开模型文件仅随 Release 完整版分发，不提交 Git，也不进入源码 ZIP。
+
+从 v0.1.0 升级时会检查模型指纹，后台重建旧向量，保留原文、修正与停用记录。期间可使用全文检索，不混用新旧模型向量，也不因此重新调用聊天模型压缩历史。
 
 **“移除会话及记忆”** 会通过官方接口归档隐藏宿主会话，并清理插件派生记忆、快照和任务；不自动备份。导入原件、共享附件、工作区文件及既有手动备份保留。该操作不等同于物理删除宿主原生日志。
 
 ## 已验证范围与限制
 
-- 10 项单元测试通过；合成历史跨越 10 个压缩点，摘要请求与同配置原生引擎一致。
+- 16 项合成单元测试覆盖导入、隔离及模型准备；合成历史跨越 10 个压缩点，摘要请求与同配置原生引擎一致。
+- 对实际解包后的安装包执行空缓存准备测试：禁用准备阶段网络后仍可复制、校验、生成 384 维向量并命中合成中文原文。
 - 原生 V4 持久化回读、检查点恢复、模式切换、会话检索隔离，以及向量计算后的原生图片保存通过自动检查。
 - 自动检查使用合成数据和模拟模型响应，没有真实模型调用或私人历史重建。
 - 桌面已验证入口、文件选择、上传及分支解析；最终确认和打开会话仍需人工验收。API 自动检查不替代完整 GUI 验收。
@@ -135,6 +143,8 @@ $DSH_HOME/conversation-bridge
 
 开发脚本从 PATH 和标准安装位置定位 npm；自定义布局可通过 `-NpmCli` 指定 `npm-cli.js` 的路径。产物写入 `dist/`，包括安装包和通用源码包。构建集成验收需要对应版本的本地 Harness。GitHub CI 仅使用 Windows／Node 24 运行合成单元测试，不替代原生集成验收。
 
+`Prepare.ps1` 是开发者构建步骤，会从固定的原发布方地址下载模型到忽略提交的 `plugin/models/`；`Build.ps1` 把它们纳入完整版并验证哈希。安装 Release 完整版的用户无需执行这些脚本。模型出处、许可证和逐文件来源见 [模型说明](plugin/notices/model/SOURCE.json)。
+
 ### 与已有插件的关系
 
 [deepseek-web-import](https://github.com/wpc0323/deepseek-web-import) 已支持网页历史导入与接续，[附件增强版](https://github.com/LingSuiYA/deepseek-web-import-f)补齐了图片和文档；[dsh-chat-import](https://github.com/Nwflower/dsh-chat-import)则覆盖多种外部工具的会话迁移、导出和同步。
@@ -154,8 +164,7 @@ $DSH_HOME/conversation-bridge
 | [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) | 宿主 SDK、原生会话、计量和压缩引擎 | [MIT](https://github.com/deepseek-ai/deepseek-harness/blob/master/LICENSE)；运行时调用，不随插件重新分发宿主代码 |
 | [Transformers.js](https://github.com/huggingface/transformers.js) | 本地向量推理，直接依赖版本 4.2.0 | [Apache-2.0](https://github.com/huggingface/transformers.js/blob/4.2.0/LICENSE) |
 | [ONNX Runtime](https://github.com/microsoft/onnxruntime) | 经 Transformers.js 使用的推理运行库 | [MIT](https://github.com/microsoft/onnxruntime/blob/main/LICENSE) |
-| [多语言 MiniLM 原模型](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2) | 语义向量模型来源 | 原模型声明 Apache-2.0 |
-| [Xenova ONNX 转换模型](https://huggingface.co/Xenova/paraphrase-multilingual-MiniLM-L12-v2) | 实际使用的量化模型 | 转换版本未单独标明许可；保留原模型来源，当前不分发权重，不把独立许可声明视为已核验 |
+| [多语言 MiniLM 与原发布方 ONNX 导出](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/tree/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/onnx) | 固定原发布方版本的量化模型，随完整版提供 | Apache-2.0；保留模型卡、许可文本及哈希，仅重命名 ONNX 文件供本地加载，未改动文件内容 |
 | [Node.js](https://github.com/nodejs/node)／[SQLite](https://www.sqlite.org/copyright.html) | 宿主运行环境与本地存储 | Node.js 主项目 MIT，SQLite 交付代码为公共领域；均由宿主提供 |
 
 Transformers.js 还引入 sharp/libvips、protobuf.js 等间接依赖，包含 Apache、MIT、BSD、ISC、LGPL 等许可。各依赖保持原有条款，不能统一改标为本项目的 MIT。版本与包级许可见 [依赖锁定清单](plugin/locks/runtime-dependencies.json)，模型版本与文件哈希见 [模型清单](plugin/locks/model.json)。
@@ -165,10 +174,11 @@ Transformers.js 还引入 sharp/libvips、protobuf.js 等间接依赖，包含 A
 - [wpc0323/deepseek-web-import](https://github.com/wpc0323/deepseek-web-import)：提供网页历史导入原生 DSH 会话的实现，MIT。
 - [LingSuiYA/deepseek-web-import-f](https://github.com/LingSuiYA/deepseek-web-import-f)：在上游基础上补充图片、附件和导入体验，MIT。原型使用固定提交 `a2503ae95b1813e2386f34f9c9054f440ffe7833`。
 - [MemTensor/MemOS](https://github.com/MemTensor/MemOS) 与 [DSH 兼容分支](https://github.com/cnlove7777777-art/dsh-memos-compat)：原型曾使用独立记忆核心，固定兼容分支提交 `0596259934ee9fb9349d411ccd6959faea93784b`。上游核心为 Apache-2.0；兼容分支说明其自身修改为 MIT，不能将整个来源统称为 MIT。
+- [Xenova ONNX 转换模型](https://huggingface.co/Xenova/paraphrase-multilingual-MiniLM-L12-v2)：v0.1.0 使用过，转换页未单独标明许可。v0.2.0 已改用原发布方明确标注许可的 ONNX 文件，不将旧版的许可疑点带入当前内置模型。
 
 当前通用版已移除上述原型的网页下载模块及 MemOS 依赖，但保留这段来源记录与致谢。本项目的主要工作是导入编排、顺序重建、检查点恢复、会话隔离和操作界面。
 
-本项目自身代码使用 [MIT 许可证](LICENSE)，第三方组件与模型遵循各自条款。[第三方说明](plugin/THIRD_PARTY.md)、[NOTICE](NOTICE) 和 `plugin/notices/` 保留用途、来源、历史署名及构建环境中可取得的许可文本。转换模型许可声明的缺口仍明确保留，不将包级元数据扫描视为所有组件的完整许可认证。项目与 DeepSeek 官方及上述作者没有隶属或背书关系。
+本项目自身代码使用 [MIT 许可证](LICENSE)，内置模型保留 Apache-2.0，其他第三方组件遵循各自条款。[第三方说明](plugin/THIRD_PARTY.md)、[NOTICE](NOTICE) 和 `plugin/notices/` 保留用途、来源、历史署名及构建环境中可取得的许可文本，不将包级元数据扫描视为所有组件的完整许可认证。项目与 DeepSeek 官方及上述作者没有隶属或背书关系。
 
 ## 文档与反馈
 

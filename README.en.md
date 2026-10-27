@@ -8,7 +8,7 @@ and continue from the end of the branch you select.
 
 **JSON → select branch/model → local preview → confirm preparation → continue**
 
-> v0.1.0 is experimental. Validated on Windows, Harness 0.2.1-rc.3, V4 sessions.
+> v0.2.0 is experimental and includes the local embedding model. Validated on Windows, Harness 0.2.1-rc.3, V4 sessions.
 > Other host versions are blocked pending validation. No npm package is published.
 
 ## Why this exists
@@ -47,11 +47,11 @@ style examples, extra chat system prompt or paid fact extraction is added.
 
 ## Install and use
 
-Download the tgz from the [v0.1.0 experimental release](https://github.com/wsj895490208/dsh-conversation-bridge/releases/tag/v0.1.0),
+Download the tgz from the [v0.2.0 model-inclusive release](https://github.com/wsj895490208/dsh-conversation-bridge/releases/tag/v0.2.0),
 fully quit Harness, and run from the download directory:
 
 ```powershell
-dsh plugin --profile desktop add .\dsh-conversation-bridge-0.1.0.tgz --ignore-scripts
+dsh plugin --profile desktop add .\dsh-conversation-bridge-0.2.0.tgz --ignore-scripts
 ```
 
 Use the bundled CLI if `dsh` is not on PATH. The repository root is not an
@@ -63,7 +63,7 @@ installable bundle: plugin sources live in `plugin/`; install the built tgz.
    session as the settings source. A blank configured session is sufficient;
    there is no need to send a paid test message first.
 4. Run local preview, check the model/threshold/attachments, and optionally supply missing attachment bodies.
-5. Confirm preparation. The first local embedding model download is pinned and hash-verified.
+5. Confirm preparation. Model files are copied automatically from the package and hash-verified. No manual model setup or Hugging Face access is required.
 6. After reconstruction, persistence and indexing pass verification, send your first new message.
 
 Below the native threshold, all original branch messages remain and no summary
@@ -74,12 +74,21 @@ incur another charge. Summary/chat context is sent to the provider you configure
 
 No web login token or online attachment downloader is included.
 
+The tgz includes five publisher-provided model files (127,536,798 bytes before
+compression). Model preparation and local indexing work without network access.
+The package manager may still contact its registry for dependencies; chat and
+summary calls still use your configured provider. This is not fully offline chat.
+
 ## Data and removal
 
 Default data: `$DSH_HOME/conversation-bridge`, or `~/.dsh/conversation-bridge`
 when unset. Configure `dataDir`/`modelCache` in the plugin's task/settings page.
 Changing the location does not move old data; the page reports when restart is
 required. Host credentials and native sessions remain managed by Harness.
+
+On upgrade, model fingerprints invalidate legacy vectors without altering raw
+histories, corrections or tombstones. Reindexing is automatic, with full-text
+retrieval available meanwhile; it does not trigger paid historical summaries.
 
 Removing a conversation archives its native listing and cleans plugin-derived
 memory/tasks without making a backup. Original uploads, shared attachments,
@@ -88,7 +97,7 @@ erasure of host logs. Uninstalling the plugin preserves user data.
 
 ## Validation and limits
 
-- Ten synthetic unit tests; a ten-compaction native replay matches stock-engine
+- Sixteen synthetic unit tests; a ten-compaction native replay matches stock-engine
   summary requests. Native persistence, restart/cache reuse, tool modes and
   local embedding/image coexistence have offline integration checks.
 - No real paid model calls or private-history reconstruction are run by these checks.
@@ -96,7 +105,9 @@ erasure of host logs. Uninstalling the plugin preserves user data.
   still needs manual acceptance. API tests do not replace GUI acceptance.
 - The unchanged factory summarizer currently favors English engineering
   checkpoints. Reconstructed context is not a reproduction of the web service's
-  hidden window. Model weights are not distributed.
+  hidden window. Model files ship only in the installer, not Git or the source zip.
+- The actual extracted package prepares an empty cache with preparation networking
+  disabled, then builds 384-dimensional vectors and passes a synthetic Chinese recall probe.
 
 See [test results](docs/测试结果.md), [usage](docs/使用说明.md) and
 [validation/rollback](docs/验收与回滚.md). The Windows/Node 24 CI runs synthetic
@@ -113,6 +124,10 @@ The scripts use the selected Harness runtime, locate npm from PATH/standard
 installations, and accept `-NpmCli` for a custom `npm-cli.js`. Build artifacts go
 to `dist/`. No host patching is required. See the [API reference](docs/API.md).
 
+`Prepare.ps1` is for developers: it downloads the pinned publisher assets into
+ignored `plugin/models/`. `Build.ps1` includes and verifies them in the tgz.
+Users installing a Release package do not run these scripts.
+
 ## Credits and licensing
 
 Project code is [MIT](LICENSE). Native compaction is DeepSeek Harness's work;
@@ -126,10 +141,11 @@ The historical prototype used [deepseek-web-import](https://github.com/wpc0323/d
 [the DSH compatibility fork](https://github.com/cnlove7777777-art/dsh-memos-compat).
 Those implementations are not runtime dependencies or bundled vendor code.
 
-The base MiniLM model declares Apache-2.0; the pinned Xenova conversion has no
-separate explicit license metadata. We document that gap and do not distribute
-weights or claim to grant rights over them. Consult the publishers before
-mirroring them. Full provenance, qualifications and preserved texts are in
+Version 0.2.0 uses the original publisher's explicitly Apache-2.0 ONNX export,
+revision `e8f8c211226b894fcb81acc59f3b34ba3efd5f42`. The model card, full license,
+unchanged-file hashes and source paths are preserved under `plugin/notices/model/`.
+Version 0.1.0 used a Xenova conversion with incomplete license metadata; that
+conversion is no longer used or bundled. Full provenance and preserved texts are in
 [THIRD_PARTY.md](plugin/THIRD_PARTY.md), [NOTICE](NOTICE) and `plugin/notices/`.
 
 This is an independent community project without official endorsement. Report

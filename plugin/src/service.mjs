@@ -3,7 +3,7 @@ import {join,basename,resolve} from 'node:path';
 import {Store} from './store.mjs';
 import {MemoryIndex} from './memory.mjs';
 import {SemanticWorker} from './semantic.mjs';
-import {ensureModel} from './models.mjs';
+import {ensureModel,modelFingerprint,modelPin,hasBundledModel} from './models.mjs';
 import {messageBody} from './importer.mjs';
 import {runImportWorker} from './import-task.mjs';
 import {nativeSession} from './native.mjs';
@@ -17,7 +17,7 @@ export function normalizeUsage(u){return u?{input:(u.inputTokens??u.input_tokens
 
 export class BridgeService{
   constructor(root,host={},options={}){
-    this.root=directory(resolve(root));this.host=host;this.modelCache=options.modelCache||join(this.root,'models');
+    this.root=directory(resolve(root));this.host=host;this.modelCache=options.modelCache||join(this.root,'models',modelFingerprint.slice(0,16));
     for(const folder of ['imports','archives','conversations','exports'])directory(join(this.root,folder));
     this.store=new Store(this.root);this.semantic=options.semantic||new SemanticWorker(this.modelCache);this.indices=new Map();this.controllers=new Map();this.running=new Map();this.replayScopes=new Map();this.bridgePromise=null;this.closed=false;
     if(!this.store.get('settings','settings',false))this.store.put('settings',{id:'settings',...defaults});
@@ -26,13 +26,14 @@ export class BridgeService{
   }
   settings(){return this.store.get('settings','settings');}
   setSettings(input){const next={};for(const key of Object.keys(defaults))if(input[key]!==undefined){const n=Number(input[key]);requireValue(Number.isSafeInteger(n)&&n>=0&&n<=100000000,'invalid_setting','设置必须为有效非负整数');next[key]=n;}requireValue((next.recallWaitMs??this.settings().recallWaitMs)<=3000&&(next.recallCharacters??this.settings().recallCharacters)<=6000,'invalid_setting','检索最多等待3秒、返回6000字符');return this.store.patch('settings','settings',next);}
-  status(){return {version:'0.1.0',root:this.root,modelCache:this.modelCache,compatibility:this.host.compatibility,settings:this.settings(),conversations:this.store.all('conversation').map(c=>({...c,busy:!!this.host.isBusy?.(c.sessionId)})),jobs:this.store.all('job'),workspaces:this.host.workspaces?.()||[],modelSources:this.host.modelSources?.()||[],usage:this.store.usageDetails('preparation'),modelProgress:this.store.get('state','model',false)};}
+  status(){return {version:'0.2.0',root:this.root,modelCache:this.modelCache,modelDelivery:{bundled:hasBundledModel(),id:modelPin.id,bytes:Object.values(modelPin.files).reduce((n,f)=>n+f.bytes,0),fingerprint:modelFingerprint,downloadRequired:false},compatibility:this.host.compatibility,settings:this.settings(),conversations:this.store.all('conversation').map(c=>({...c,busy:!!this.host.isBusy?.(c.sessionId)})),jobs:this.store.all('job'),workspaces:this.host.workspaces?.()||[],modelSources:this.host.modelSources?.()||[],usage:this.store.usageDetails('preparation'),modelProgress:this.store.get('state','model',false)};}
   upload(bytes,{kind='json',name='upload'}={}){
     requireValue(['json','attachment'].includes(kind),'invalid_upload','不支持的上传类型');requireValue(bytes.length>0&&bytes.length<=200*1024*1024,'file_too_large','文件为空或超过200MiB');
     const digest=hash(bytes),file=inside(this.root,'imports',digest+(kind==='json'?'.json':'.bin'));if(!existsSync(file))copyBytes(file,bytes);
     return this.store.put('upload',{id:digest,kind,name:basename(name),file,sha256:digest,bytes:bytes.length,createdAt:now()});
   }
   job(type,payload){
+    if(type==='index')payload={...payload,modelFingerprint};
     if(payload.conversationId)requireValue(!this.store.get('removed',payload.conversationId,false),'conversation_removed','会话已移除');
     const old=this.store.all('job').find(j=>j.type===type&&JSON.stringify(j.payload)===JSON.stringify(payload)&&['queued','running','paused','waiting','failed'].includes(j.status));if(old)return old;
     const job=this.store.create('job',{type,payload,status:'queued',done:0,total:0,offset:0,message:'排队中'});queueMicrotask(()=>this.kick());return job;
@@ -113,9 +114,9 @@ export class BridgeService{
     const final=readJson(checkpointFile),validation=await bridge.finish(final,c.workspaceId);this.store.patch('conversation',c.id,{status:'ready',indexState:'ready',liveStartSeq:final.events.length,validation,readyAt:now()});this.store.patch('job',job.id,{phase:'done',message:'原生回读、上下文和索引已通过，可直接续聊',result:{conversationId:c.id,sessionId:c.sessionId}});
   }
   async buildIndex(conversationId,job){
-    const c=this.store.get('conversation',conversationId),index=this.index(c.id);this.store.patch('job',job.id,{phase:'model',message:'核对本地向量模型'});
+    const c=this.store.get('conversation',conversationId),index=this.index(c.id);this.store.patch('job',job.id,{phase:'model',message:'从安装包自动准备并校验本地模型（无需联网）'});
     await (this.host.ensureModel||ensureModel)(this.modelCache,{signal:job.signal,progress:p=>{this.store.put('state',{id:'model',...p});}});
-    this.store.patch('job',job.id,{phase:'index',message:'正在建立本会话索引'});let offset=job.type==='index'?job.offset||0:0;
+    this.store.patch('job',job.id,{phase:'index',message:'正在建立本会话索引'});let offset=job.type==='index'&&index.vectorModel()===modelFingerprint?job.offset||0:0;
     for(;;){job.signal.throwIfAborted();requireValue(this.active(job),'job_paused','索引任务已暂停');const out=await this.semantic.call('batch',{file:index.file,offset,limit:8});offset=out.nextOffset;this.store.patch('job',job.id,{offset,done:offset,total:index.stats().total,message:`整理记忆 · 已检查 ${offset} 条原文`});if(out.done&&offset>=index.stats().total)break;}
     const health=index.health();requireValue(health.ready,'index_incomplete','向量索引不完整',{health});this.store.patch('conversation',c.id,{indexState:'ready',indexCheckedAt:now()});
   }
@@ -133,7 +134,14 @@ export class BridgeService{
     appendFileSync(inside(this.root,c.path,'new-events.jsonl'),JSON.stringify(event)+'\n');const body=textOf(message);this.index(c.id).insert({id:message.id,node:message.id,role:message.role,time:new Date(event.time).toISOString(),body,source:'new-chat'});this.store.put('captured',{id:eventId,conversationId:c.id,seq:event.seq});
     const blocked=this.store.all('job').find(j=>j.type==='index'&&j.payload.conversationId===c.id&&['failed','waiting','paused'].includes(j.status));if(!blocked)this.job('index',{conversationId:c.id});
   }
-  async recover(){for(const c of this.store.all('conversation').filter(c=>c.status==='ready'))try{const saved=await this.host.readSession(c.sessionId);for(const e of saved.events)this.capture({id:c.sessionId,header:saved.header},e);}catch(error){this.store.patch('conversation',c.id,{captureError:publicError(error)});}this.kick();}
+  async recover(){
+    for(const c of this.store.all('conversation').filter(c=>c.status==='ready')){
+      try{const saved=await this.host.readSession(c.sessionId);for(const e of saved.events)this.capture({id:c.sessionId,header:saved.header},e);}catch(error){this.store.patch('conversation',c.id,{captureError:publicError(error)});}
+      const health=this.index(c.id).health();
+      if(health.documents>0&&!health.modelMatches){this.store.patch('conversation',c.id,{indexState:'rebuilding',indexReason:'模型版本已更新，后台重建向量；原文保留，期间可用全文检索'});this.job('index',{conversationId:c.id});}
+    }
+    this.kick();
+  }
   async search(conversationId,query){
     requireValue(typeof query==='string'&&query.trim()&&query.length<=1600,'invalid_query','查询须为1—1600字符');const c=this.store.get('conversation',conversationId);requireValue(!this.store.get('removed',c.id,false),'conversation_removed','会话已移除');const index=this.index(c.id),lexical=index.lexical(query,10);let timer;
     try{const vector=await Promise.race([this.semantic.call('search',{file:index.file,query,limit:10}),new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('timeout')),this.settings().recallWaitMs);})]);return {hits:mergeRrf([lexical,vector],5),mode:'hybrid'};}catch{return {hits:lexical.slice(0,5),mode:'full-text',degraded:'向量暂不可用，已使用全文检索'};}finally{clearTimeout(timer);}

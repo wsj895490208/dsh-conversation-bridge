@@ -1,3 +1,4 @@
 * text=auto eol=lf
+plugin/notices/** whitespace=-blank-at-eol,-blank-at-eof
 *.tgz binary
 *.zip binary

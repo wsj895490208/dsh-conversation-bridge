@@ -6,6 +6,7 @@ $runtime=Resolve-BridgeRuntime -HarnessRoot $HarnessRoot -NpmCli $NpmCli -NeedPy
 $nodePath=$runtime.Node
 $pythonPath=$runtime.Python
 $npmScript=$runtime.NpmCli
+$packageVersion=(Get-Content -LiteralPath (Join-Path $projectRoot 'plugin/package.json') -Raw | ConvertFrom-Json).version
 Push-Location $projectRoot
 try {
   & $pythonPath tools/collect-notices.py
@@ -21,8 +22,10 @@ try {
     & $nodePath $npmScript pack --ignore-scripts --pack-destination '..\dist' --cache '..\data\npm-cache'
     if($LASTEXITCODE -ne 0){throw '打包失败'}
   } finally {Pop-Location}
-  & $pythonPath tools/verify-package.py 'dist/dsh-conversation-bridge-0.1.0.tgz'
+  & $pythonPath tools/verify-package.py ("dist/dsh-conversation-bridge-"+$packageVersion+".tgz")
   if($LASTEXITCODE -ne 0){throw '发布包检查失败'}
+  & $pythonPath tools/check-package-offline.py ("dist/dsh-conversation-bridge-"+$packageVersion+".tgz") --node $nodePath
+  if($LASTEXITCODE -ne 0){throw 'Extracted package offline check failed'}
   & $pythonPath tools/source-package.py
   if($LASTEXITCODE -ne 0){throw '源码打包失败'}
 } finally {Pop-Location}

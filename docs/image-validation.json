@@ -1,10 +1,10 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "localAdmission": true,
   "readback": true,
   "embeddingFirst": true,
   "separateProcess": true,
-  "hostPid": 36344,
+  "hostPid": 7892,
   "semanticPid": 36448,
   "dimensions": 384,
   "vectorIndexVerified": true,

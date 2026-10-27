@@ -1,0 +1,35 @@
+{
+  "publisher": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+  "license": "Apache-2.0",
+  "modelCard": "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/blob/e8f8c211226b894fcb81acc59f3b34ba3efd5f42/README.md",
+  "modelCardSha256": "1e98ea05b0de579fcaad3d625b62ea55647142ed674d5f5ebf1440e4bbbb6f23",
+  "modification": "ONNX file renamed to model_quantized.onnx for the local loader; file bytes unchanged.",
+  "files": {
+    "config.json": {
+      "bytes": 645,
+      "sha256": "6300193cb75e01cf80c96decef7187dfb33094d97cc1490b7ead6ff134476e4e",
+      "source": "config.json"
+    },
+    "tokenizer.json": {
+      "bytes": 9081518,
+      "sha256": "2c3387be76557bd40970cec13153b3bbf80407865484b209e655e5e4729076b8",
+      "source": "tokenizer.json"
+    },
+    "tokenizer_config.json": {
+      "bytes": 526,
+      "sha256": "5036ea374ffedd706e3bef33e2e0d6953cb868ef8a490e76e32ba0faa37a6b9b",
+      "source": "tokenizer_config.json"
+    },
+    "special_tokens_map.json": {
+      "bytes": 239,
+      "sha256": "378eb3bf733eb16e65792d7e3fda5b8a4631387ca04d2015199c4d4f22ae554d",
+      "source": "special_tokens_map.json"
+    },
+    "onnx/model_quantized.onnx": {
+      "bytes": 118453870,
+      "sha256": "98a01d88b7de996cdea58c32ca71208c09968d143798814b2ea09d3439dc334f",
+      "source": "onnx/model_quint8_avx2.onnx"
+    }
+  }
+}

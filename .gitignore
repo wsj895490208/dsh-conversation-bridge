@@ -3,7 +3,9 @@ dist/
 backups/
 node_modules/
 **/node_modules/
+plugin/models/
 tests/.tmp/
+**/.tmp/
 *.log
 .env*
 __pycache__/

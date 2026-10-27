@@ -1,26 +1,32 @@
 {
-  "id": "Xenova/paraphrase-multilingual-MiniLM-L12-v2",
-  "revision": "2c4055b12046f11709e9df2c122e59ffbdc2f900",
+  "id": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+  "license": "Apache-2.0",
   "files": {
     "config.json": {
-      "bytes": 673,
-      "sha256": "05b570bff786faa5c4604152aa16f19f77ed6dfc31e47dd0f3dd987078693ac7"
+      "bytes": 645,
+      "sha256": "6300193cb75e01cf80c96decef7187dfb33094d97cc1490b7ead6ff134476e4e",
+      "source": "config.json"
     },
     "tokenizer.json": {
-      "bytes": 17082913,
-      "sha256": "b60b6b43406a48bf3638526314f3d232d97058bc93472ff2de930d43686fa441"
+      "bytes": 9081518,
+      "sha256": "2c3387be76557bd40970cec13153b3bbf80407865484b209e655e5e4729076b8",
+      "source": "tokenizer.json"
     },
     "tokenizer_config.json": {
-      "bytes": 496,
-      "sha256": "3f5961b9ac86288cccdb97f32fb848d6187c78e1603958c53f3ea1f296b7d8a2"
+      "bytes": 526,
+      "sha256": "5036ea374ffedd706e3bef33e2e0d6953cb868ef8a490e76e32ba0faa37a6b9b",
+      "source": "tokenizer_config.json"
     },
     "special_tokens_map.json": {
-      "bytes": 280,
-      "sha256": "06e405a36dfe4b9604f484f6a1e619af1a7f7d09e34a8555eb0b77b66318067f"
+      "bytes": 239,
+      "sha256": "378eb3bf733eb16e65792d7e3fda5b8a4631387ca04d2015199c4d4f22ae554d",
+      "source": "special_tokens_map.json"
     },
     "onnx/model_quantized.onnx": {
-      "bytes": 118308126,
-      "sha256": "66fc00f5f29afcaff34092e1bdd20008ca3918265a82fb9695a551e510cc4ebc"
+      "bytes": 118453870,
+      "sha256": "98a01d88b7de996cdea58c32ca71208c09968d143798814b2ea09d3439dc334f",
+      "source": "onnx/model_quint8_avx2.onnx"
     }
   }
 }

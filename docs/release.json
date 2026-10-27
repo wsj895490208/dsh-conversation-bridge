@@ -1,7 +1,7 @@
 {
-  "version": "0.1.0",
-  "package": "dsh-conversation-bridge-0.1.0.tgz",
-  "sha256": "6b95c181fab9a9b75b174b5f1cb02b1b0f6bdddab5cdfd0cffa01dfc054a2705",
+  "version": "0.2.0",
+  "package": "dsh-conversation-bridge-0.2.0.tgz",
+  "sha256": "08ac7e31024960f50b6bf49970457879f5ec0202d2aba866baec2828d3509f5f",
   "files": [
     {
       "path": "notices/dependencies/_huggingface_jinja__LICENSE",
@@ -165,8 +165,8 @@
     },
     {
       "path": "NOTICE",
-      "sha256": "d29895c9e4f8dca9fc406bc1e025d5023566b789190f972950fa11fafcee718f",
-      "bytes": 976
+      "sha256": "a38c274c216814f242a87477b9f68693756ff0a0bfaba6af5eea84674ba32d98",
+      "bytes": 1122
     },
     {
       "path": "notices/historical-web-import/NOTICE",
@@ -235,8 +235,13 @@
     },
     {
       "path": "client/index.js",
-      "sha256": "3c5676417e03417d2fc8f5a5ce00c06ab9f768a6f7dfe38165e68477188879b6",
-      "bytes": 18484
+      "sha256": "bb29650e42f55a26271c107b89eed8fe1e33e0c6fccfe94b26fab208038442aa",
+      "bytes": 18729
+    },
+    {
+      "path": "models/multilingual-minilm/config.json",
+      "sha256": "6300193cb75e01cf80c96decef7187dfb33094d97cc1490b7ead6ff134476e4e",
+      "bytes": 645
     },
     {
       "path": "notices/dependencies/index.json",
@@ -245,18 +250,38 @@
     },
     {
       "path": "locks/model.json",
-      "sha256": "00ed473383551a458e8e493358850dfc3eadf7932fbc0313a0d0e8f38b77d74c",
-      "bytes": 865
+      "sha256": "4e2245146afa759c57256ab70cff7e29cdc68b9646162886a864546fae6f8878",
+      "bytes": 1108
     },
     {
       "path": "package.json",
-      "sha256": "c029f1711414ae25277137fa2022bb76144799b731d2baea6db856ae65c45548",
-      "bytes": 1244
+      "sha256": "7eaebf18c499ccf4179efcea5ac2ffb87ba0c191e48c51bccdf7efb12e0a4558",
+      "bytes": 1274
     },
     {
       "path": "locks/runtime-dependencies.json",
       "sha256": "16d93414b00cb7998985bba0dd8fc7b5de8fd0286b51db9ea078c4656655e5d7",
       "bytes": 16111
+    },
+    {
+      "path": "notices/model/SOURCE.json",
+      "sha256": "d5003a1285d6fd58343089f1848938b07f0ff887f2fa816daa23f0efb6996905",
+      "bytes": 1471
+    },
+    {
+      "path": "models/multilingual-minilm/special_tokens_map.json",
+      "sha256": "378eb3bf733eb16e65792d7e3fda5b8a4631387ca04d2015199c4d4f22ae554d",
+      "bytes": 239
+    },
+    {
+      "path": "models/multilingual-minilm/tokenizer_config.json",
+      "sha256": "5036ea374ffedd706e3bef33e2e0d6953cb868ef8a490e76e32ba0faa37a6b9b",
+      "bytes": 526
+    },
+    {
+      "path": "models/multilingual-minilm/tokenizer.json",
+      "sha256": "2c3387be76557bd40970cec13153b3bbf80407865484b209e655e5e4729076b8",
+      "bytes": 9081518
     },
     {
       "path": "notices/dependencies/_img_colour__LICENSE.md",
@@ -269,14 +294,19 @@
       "bytes": 1081
     },
     {
+      "path": "notices/model/MODEL-CARD.md",
+      "sha256": "1e98ea05b0de579fcaad3d625b62ea55647142ed674d5f5ebf1440e4bbbb6f23",
+      "bytes": 3888
+    },
+    {
       "path": "README.md",
-      "sha256": "64a4fc4ea07c1ad61f1ceae652a2f7427e4b46442ed8434810ce75b8d64a21d5",
-      "bytes": 2026
+      "sha256": "2d58bb3704764d87283db2685222fdd2b4f97a18cc706be3d4ca3b636484cba3",
+      "bytes": 2712
     },
     {
       "path": "THIRD_PARTY.md",
-      "sha256": "816ae3d49fdeeba9e07b347c9768b71cef26b8ae300c06e244723e4cacf0d3e8",
-      "bytes": 4913
+      "sha256": "cde543bf996d78f1bdb8aec29a3ddff786344045ac82bcbf93100e6bbf8cd210",
+      "bytes": 5531
     },
     {
       "path": "src/attachments.mjs",
@@ -330,13 +360,13 @@
     },
     {
       "path": "src/memory.mjs",
-      "sha256": "78fc6db1113d930a86d082efdf757f14e379c9ac0f3161a687b9fa7079f60495",
-      "bytes": 8633
+      "sha256": "7e409f33632c4f9dc0b01fc290e67a76baf614eaeb01930a550449aa911ebd53",
+      "bytes": 9377
     },
     {
       "path": "src/models.mjs",
-      "sha256": "a0829357e6add3289cb83a3e00df8e25604421a30f54b39e8d75810a6b6f3633",
-      "bytes": 2413
+      "sha256": "53e546945aaf848efd217c35ca9ed55c579880d3d35e008b40cbb1d150fcf724",
+      "bytes": 3938
     },
     {
       "path": "src/native.mjs",
@@ -360,8 +390,8 @@
     },
     {
       "path": "src/semantic-worker.mjs",
-      "sha256": "3a5ac7b3301e08c22f1ba58d8857d7157ed8a67d86342e6ed0365dd55e260f36",
-      "bytes": 3325
+      "sha256": "618e0da96c922f681e227f08b4d6ef65e3496756c152c3448a5504876c600e5f",
+      "bytes": 3537
     },
     {
       "path": "src/semantic.mjs",
@@ -370,8 +400,8 @@
     },
     {
       "path": "src/service.mjs",
-      "sha256": "8e5364e8e65623366357108b7239a554456462a76c2ec072fb847b9e99579e27",
-      "bytes": 25956
+      "sha256": "b7833505a4e099daa0925274bb835b1b82f306d75abde87e4d17665baba8f6ea",
+      "bytes": 26668
     },
     {
       "path": "src/store.mjs",
@@ -384,9 +414,19 @@
       "bytes": 2764
     },
     {
+      "path": "models/multilingual-minilm/onnx/model_quantized.onnx",
+      "sha256": "98a01d88b7de996cdea58c32ca71208c09968d143798814b2ea09d3439dc334f",
+      "bytes": 118453870
+    },
+    {
       "path": "notices/dependencies/boolean__LICENSE.txt",
       "sha256": "8e4aa1aef825c37d6f74d4b867dccb7b059b66c75ecdedc74834e2f403568a27",
       "bytes": 1086
+    },
+    {
+      "path": "notices/model/LICENSE-APACHE-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
     },
     {
       "path": "cordis.patch.yml",
@@ -395,5 +435,12 @@
     }
   ],
   "privateDataIncluded": false,
-  "machineSpecificPaths": false
+  "machineSpecificPaths": false,
+  "modelWeightsIncluded": true,
+  "bundledModel": {
+    "id": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+    "license": "Apache-2.0",
+    "bytes": 127536798
+  }
 }

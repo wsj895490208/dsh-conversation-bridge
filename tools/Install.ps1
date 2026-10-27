@@ -8,10 +8,11 @@ param(
 $ErrorActionPreference='Stop'
 $projectRoot=Split-Path -Parent $PSScriptRoot
 if(Get-Process -Name 'DeepSeek Harness' -ErrorAction SilentlyContinue){throw '请先正常退出 Harness，等待正在执行的任务完成。'}
-$bundle=Join-Path $projectRoot 'dist\dsh-conversation-bridge-0.1.0.tgz'
+$packageVersion=(Get-Content -LiteralPath (Join-Path $projectRoot 'plugin/package.json') -Raw | ConvertFrom-Json).version
+$bundle=Join-Path $projectRoot ("dist\dsh-conversation-bridge-"+$packageVersion+".tgz")
 if(-not(Test-Path -LiteralPath $bundle)){throw '请先构建插件。'}
 $digest=(Get-FileHash -LiteralPath $bundle -Algorithm SHA256).Hash.ToLowerInvariant()
-$installBundle=Join-Path $projectRoot ('dist\dsh-conversation-bridge-0.1.0-'+$digest.Substring(0,12)+'.tgz')
+$installBundle=Join-Path $projectRoot ('dist\dsh-conversation-bridge-'+$packageVersion+'-'+$digest.Substring(0,12)+'.tgz')
 if(-not(Test-Path -LiteralPath $installBundle)){Copy-Item -LiteralPath $bundle -Destination $installBundle}
 $cliPath=Join-Path $HarnessRoot 'resources\runtime\cli\bin\dsh.cmd'
 if($ReplacePackage){

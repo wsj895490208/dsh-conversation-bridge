@@ -2,7 +2,8 @@ import argparse,hashlib,json,os,tarfile
 from pathlib import Path
 p=argparse.ArgumentParser();p.add_argument('--dsh-home',type=Path,default=Path(os.environ.get('DSH_HOME') or Path.home()/'.dsh'));p.add_argument('--profile',default='desktop');a=p.parse_args()
 root=Path(__file__).resolve().parents[1];installed=a.dsh_home/'profiles'/a.profile/'node_modules/dsh-conversation-bridge';checked=0
-with tarfile.open(root/'dist/dsh-conversation-bridge-0.1.0.tgz','r:gz') as tf:
+version=json.loads((root/'plugin/package.json').read_text(encoding='utf-8'))['version']
+with tarfile.open(root/f'dist/dsh-conversation-bridge-{version}.tgz','r:gz') as tf:
  for member in tf.getmembers():
   if member.isfile():
    relative=member.name.removeprefix('package/');assert tf.extractfile(member).read()==(installed/relative).read_bytes(),relative;checked+=1

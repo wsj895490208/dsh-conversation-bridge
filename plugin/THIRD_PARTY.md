@@ -1,8 +1,10 @@
 # Third-party components and provenance
 
 The project's MIT license applies to its own code. Third-party software and
-models retain their own copyright and license terms. No model weights, host
-SDK implementation, dependency binaries, or historical vendor trees are bundled.
+models retain their own copyright and license terms. The full release installer
+includes the explicitly Apache-2.0 model described below. Host SDK implementation,
+dependency binaries, and historical vendor trees are not bundled. Model weights
+are excluded from Git and the source zip.
 
 ## Current components
 
@@ -27,12 +29,13 @@ or an exhaustive license certification for every optional platform binary.
 Dependencies install separately through the package manager. Preserve their
 original license and notice files, especially when making a bundled installer.
 
-## Embedding model: explicit qualification
+## Bundled embedding model
 
-- Base model: [sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2), whose model card declares Apache-2.0.
-- Converted model used by the plugin: [Xenova/paraphrase-multilingual-MiniLM-L12-v2](https://huggingface.co/Xenova/paraphrase-multilingual-MiniLM-L12-v2), revision `2c4055b12046f11709e9df2c122e59ffbdc2f900`.
-- The pinned conversion card does not separately declare a license. The base model's declaration is not represented here as a separate, verified permission statement for every converted file.
-- Model files are downloaded from the publisher and SHA-256-verified against `locks/model.json`; they are **not** included in this repository or release assets. This project grants no additional rights over them. Check the publishers' terms before mirroring or redistributing weights.
+- Publisher: [sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2), revision `e8f8c211226b894fcb81acc59f3b34ba3efd5f42`, explicitly Apache-2.0 in its model card/API metadata.
+- Uses the publisher's own `onnx/model_quint8_avx2.onnx`, renamed to `onnx/model_quantized.onnx` for the local loader. File bytes are unchanged; configuration and tokenizer files also come from that same revision.
+- Five public model files totaling 127,536,798 bytes are included in the full installer. Their SHA-256 values and original paths are recorded in `locks/model.json` and `notices/model/SOURCE.json`.
+- Publisher model card and full Apache-2.0 text are preserved under `notices/model/`. The model retains Apache-2.0, separately from the project's MIT code license.
+- First use copies and verifies the package files locally. It does not download from Hugging Face. Missing/corrupt files fail explicitly. Developer preparation may download from the fixed publisher URLs.
 
 ## Historical prototype and acknowledgements
 
@@ -42,6 +45,7 @@ removed when extracting this generic plugin; they are not runtime dependencies:
 - [wpc0323/deepseek-web-import](https://github.com/wpc0323/deepseek-web-import): native Harness import work, MIT, Copyright (c) 2026 wpc0323.
 - [LingSuiYA/deepseek-web-import-f](https://github.com/LingSuiYA/deepseek-web-import-f), commit `a2503ae95b1813e2386f34f9c9054f440ffe7833`: attachment enhancement of the project above, MIT, Modifications Copyright (c) 2026 LingSuiYA. Their original LICENSE and NOTICE are preserved in `notices/historical-web-import/` as provenance, without redistributing their implementation.
 - [MemTensor/MemOS](https://github.com/MemTensor/MemOS) and [cnlove7777777-art/dsh-memos-compat](https://github.com/cnlove7777777-art/dsh-memos-compat), compatibility commit `0596259934ee9fb9349d411ccd6959faea93784b`: the earlier memory core. MemOS upstream is Apache-2.0; the fork's README describes its own modifications as MIT. The fork's package metadata alone must not be used to label the entire upstream core MIT. No MemOS engine or adapter is shipped here.
+- Version 0.1.0 used [Xenova/paraphrase-multilingual-MiniLM-L12-v2](https://huggingface.co/Xenova/paraphrase-multilingual-MiniLM-L12-v2), revision `2c4055b12046f11709e9df2c122e59ffbdc2f900`, with incomplete standalone license metadata. Version 0.2.0 replaces it with the publisher's own explicitly licensed export; no Xenova files are bundled.
 
 The generic plugin contributes migration orchestration, sequential context
 reconstruction, checkpoints, per-session isolation and user-facing controls.

@@ -13,7 +13,9 @@ LingSuiYA/deepseek-web-import-f (MIT), and MemTensor/MemOS with the
 cnlove7777777-art/dsh-memos-compat fork (upstream Apache-2.0; fork modifications
 described as MIT). These historical vendor implementations are not shipped.
 
-Model weights are not distributed. The converted model's separate license
-metadata remains unclear; see plugin/THIRD_PARTY.md for the explicit qualification.
+The full installer includes the original publisher's multilingual MiniLM ONNX
+model under Apache-2.0, with its model card, license and exact provenance under
+notices/model/. File bytes are unchanged; the ONNX file is renamed for
+the local loader. Model assets are excluded from Git and the source zip.
 
 This is an independent community project, without official endorsement.
