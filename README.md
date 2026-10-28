@@ -31,27 +31,101 @@
 
 整个流程以上下文为主，RAG 检索只是按需查阅旧细节的辅助。插件不会添加人物设定、交流样例或自定义聊天系统提示词，也不会默认做付费事实提炼。宿主的运行上下文、时间、权限和审批机制照常生效。
 
-## 快速开始
+## 安装与开始使用
 
 ### 前置条件
 
 - Windows 版 DeepSeek Harness **0.2.1-rc.3**，使用 V4 会话格式。
 - 已配置一个可用模型，并在原生页面打开过对应会话，作为设置来源。空白会话即可，**不需要先发一条付费测试消息**。
-- 不需要手动准备向量模型。完整版安装包已包含原发布方的多语言 MiniLM ONNX 模型，首次导入时自动从包内复制到缓存并逐文件校验 SHA-256，不访问 Hugging Face。模型文件（5 个）合计约 **122 MiB**（127,536,798 字节，未压缩），也不需要额外的向量服务 API 密钥。
+- 安装包或完整插件目录里带有原发布方的多语言 MiniLM ONNX 模型（5 个文件，约 **122 MiB** 未压缩），不需要单独下载模型、配置模型路径或申请向量服务 API 密钥。首次导入时会把模型复制到缓存并逐文件校验 SHA-256，不访问 Hugging Face。
+
+安装只需要 Windows 版 Harness 和安装包或完整插件目录；用于聊天和摘要的对话模型、设置来源可以在第一次导入前再准备。
 
 这里的“离线”只指模型准备和本地索引。首次安装时，包管理器仍可能联网获取插件依赖；聊天和滚动摘要仍使用你配置的模型服务。
 
-### 安装本地包
+### 安装
 
-从上方 Release 下载 `.tgz`，先正常退出 Harness，再进入安装包所在目录，通过官方 CLI 安装：
+有两种方式：
+
+- **方式 A：DSH 界面安装**：最方便，但要求你已经有本仓库的 `plugin` 目录，并且依赖和模型都齐全。
+- **方式 B：Release 包安装**：适合普通用户、新机器，或者没有本仓库依赖目录的情况。
+
+#### 方式 A：DSH 界面安装（本仓库目录）
+
+如果你已经把仓库下载到本地，并且 `plugin\node_modules` 和 `plugin\models\multilingual-minilm` 都存在，可以直接在 DSH 里选这个目录：
+
+```text
+<仓库目录>\plugin
+```
+
+例如：
+
+```text
+E:\DeepSeek Harness\DSH-Conversation-Bridge\plugin
+```
+
+1. 打开 DSH 的插件管理/设置，点击 **“添加插件”**。
+2. 把上面的目录路径粘贴到输入框。路径有空格时，加英文引号也可以。
+3. 点 **“安装”**。
+4. 如果侧边栏没有出现 **“导入网页对话”**，重启 Harness。
+
+> 如果插件列表里已经有旧版（例如 0.1.0），先卸载旧版再装。这个弹窗对第三方插件通常不提供原地升级；卸载不会删除 `conversation-bridge` 数据目录。
+
+**注意：这是本地链接安装，不是复制。**
+
+- DSH 会把所选目录以 `link:` 方式挂进 profile，不会额外安装这个目录的 npm 依赖。所以目录里必须有 `node_modules`；如果缺依赖，改用方式 B。
+- Release 包解压后的目录没有 `node_modules`，不要直接拿来走方式 A。
+- 安装后不要移动、改名、删除或清理这个目录，否则插件会失效。
+- 本地目录插件没有“更新”提示；换版本时先卸载，再选新目录。
+
+#### 方式 B：Release 包安装（普通用户推荐）
+
+如果你没有本仓库的完整开发目录，或者只想安装固定发布版，用这种方式。Release 包会由 pnpm 安装依赖，并带上模型。
+
+1. 从上方 Release 下载 `dsh-conversation-bridge-0.2.0.tgz`（约 73 MiB）。
+2. 完全退出 Harness：关闭所有窗口，并在任务管理器确认 `DeepSeek Harness.exe` 已结束。
+3. 打开 PowerShell，进入 `.tgz` 所在目录。
+4. 执行安装：
 
 ```powershell
 dsh plugin --profile desktop add .\dsh-conversation-bridge-0.2.0.tgz --ignore-scripts
 ```
 
-如果 `dsh` 不在 PATH 中，请使用 Harness 安装目录内自带的 CLI。安装后重新打开 Harness，点击侧边栏的 **“导入网页对话”**。
+如果提示找不到 `dsh`，改用 Harness 自带的 CLI：
 
-> 仓库根目录不是可直接安装的插件包。插件源码在 `plugin/`，安装时请使用构建出的 `.tgz`。
+```powershell
+& "<Harness 安装目录>\resources\runtime\cli\bin\dsh.cmd" plugin --profile desktop add .\dsh-conversation-bridge-0.2.0.tgz --ignore-scripts
+```
+
+把 `<Harness 安装目录>` 换成 `DeepSeek Harness.exe` 所在目录，例如 `E:\DeepSeek Harness`。
+
+5. 重新打开 Harness。侧边栏出现 **“导入网页对话”** 即安装完成。
+
+说明：
+
+- `--ignore-scripts` 是本插件要求的参数，不要省略。
+- 安装阶段通常需要联网解析 JavaScript 依赖；模型文件已经在 tgz 里，不会访问 Hugging Face。
+- 第一次安装可能需要几分钟，等待命令结束。
+- 不需要管理员权限。
+
+#### 安装失败时
+
+- **方式 A 提示路径不存在 / 不是目录**：确认选的是 `plugin` 目录，不是仓库根目录。
+- **方式 A 装完加载失败**：多半是目录里缺 `node_modules`，改用方式 B。
+- **方式 B 提示找不到 `.tgz`**：先 `Get-ChildItem *.tgz` 确认文件名，再 `cd` 到文件所在目录。
+- **装完没有入口**：重启 Harness；仍没有就确认安装目录里有 `package.json`、`client/`，并确认 DSH 是 0.2.1-rc.3。
+- **首次导入提示模型缺失**：确认 `models/multilingual-minilm` 下有 5 个模型文件；缺了就用方式 B 重装。
+- **安装时报依赖或网络错误**：检查网络、代理或安装源后重试。
+
+#### 卸载
+
+在插件列表里移除，或执行：
+
+```powershell
+dsh plugin --profile desktop remove dsh-conversation-bridge
+```
+
+卸载不会删除 `conversation-bridge` 数据目录，重新安装后还能继续用。
 
 ### 导入并继续
 
@@ -120,7 +194,7 @@ $DSH_HOME/conversation-bridge
 - `models/`：本地向量模型缓存
 - `exports/`：导出文件
 
-可以在 **任务与设置 → 存储位置** 配置 `dataDir` 和 `modelCache`，优先使用官方配置编辑器。更改位置不会自动搬迁已有数据；如果 DSH 无法在线重载配置，页面会提示正常重启后生效。安装包可以放在任意目录，数据不会写进安装目录。
+可以在 **任务与设置 → 存储位置** 配置 `dataDir` 和 `modelCache`，优先使用官方配置编辑器。更改位置不会自动搬迁已有数据；如果 DSH 无法在线重载配置，页面会提示正常重启后生效。方式 A 安装后不要移动所选插件目录；方式 B 不受影响。数据不会写进插件目录。
 
 宿主凭据与原生会话仍由 Harness 管理。用户数据、运行缓存和本地备份不会进入 Git 或安装包；模型权重只随 Release 完整版分发，不提交 Git，也不进入源码 ZIP。
 
